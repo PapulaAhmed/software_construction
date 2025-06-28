@@ -10,9 +10,12 @@ import java.util.List;
 
 /**
  * Library Management System - Original Version (WITH CODE SMELLS)
- * @author Sahand
+ * @author Sahand Mohammed
+ * @author Papula Ahmed
+ * @author Elaf Chatin Khalid
+ * @author Meer Hoshyar Ahmed
  */
-public class Software_construction {
+public class SoftwareConstruction {
 
     public static void main(String[] args) {
         System.out.println("=== Library Management System - Original Version ===");
@@ -54,9 +57,9 @@ public class Software_construction {
 // CODE SMELL 4: Magic Numbers - Hard-coded values without explanation
 // CODE SMELL 5: Poor Naming - Variables like 'x', 'temp', etc.
 class LibraryManager {
-    private List<Book> books;
-    private List<Member> members;
-    private List<String> borrowedBooks;
+    final List<Book> books;
+    final List<Member> members;
+    final List<String> borrowedBooks;
 
     public LibraryManager() {
         books = new ArrayList<>();

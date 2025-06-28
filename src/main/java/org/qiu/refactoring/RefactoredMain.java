@@ -6,7 +6,10 @@ import org.qiu.refactoring.refactored.RefactoredLibraryManager;
  * Main class for the refactored Library Management System
  * Demonstrates clean, maintainable code after refactoring
  * 
- * @author Sahand
+ * @author Sahand Mohammed
+ * @author Papula Ahmed
+ * @author Elaf Chatin Khalid
+ * @author Meer Hoshyar Ahmed
  */
 public class RefactoredMain {
 
