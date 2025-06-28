@@ -35,10 +35,13 @@ public class RefactoredMain {
         manager.displayStatistics();
         
         // Performance test
+        System.out.println("\n=== PERFORMANCE TEST ===");
         long startTime = System.currentTimeMillis();
         manager.performOptimizedOperations();
         long endTime = System.currentTimeMillis();
+        System.out.println("=== EXECUTION TIME RESULT ===");
         System.out.println("Refactored code execution time: " + (endTime - startTime) + " ms");
+        System.out.println("==============================");
         
         // Demonstrate additional functionality
         System.out.println("\n=== Additional Operations ===");

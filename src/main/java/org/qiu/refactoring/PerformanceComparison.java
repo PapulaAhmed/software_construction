@@ -1,5 +1,10 @@
 package org.qiu.refactoring;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.qiu.refactoring.refactored.RefactoredLibraryManager;
 
 /**
@@ -13,27 +18,30 @@ public class PerformanceComparison {
     
     public static void main(String[] args) {
         System.out.println("=== Performance Comparison: Original vs Refactored ===\n");
-        
+
         // Setup data for both versions
         setupOriginalData();
         setupRefactoredData();
-        
+
         // Warmup JVM
         System.out.println("Warming up JVM...");
         performWarmup();
-        
+
         // Run performance tests
         System.out.println("\nRunning performance tests...\n");
-        
+
         long originalTime = measureOriginalPerformance();
         long refactoredTime = measureRefactoredPerformance();
-        
+
         // Display results
         displayResults(originalTime, refactoredTime);
-        
+
         // Additional metrics
         measureMemoryUsage();
         measureCodeComplexity();
+
+        // Create summary file
+        createPerformanceSummaryFile(originalTime, refactoredTime);
     }
     
     private static void setupOriginalData() {
@@ -74,59 +82,69 @@ public class PerformanceComparison {
     
     private static long measureOriginalPerformance() {
         System.out.println("Testing Original Code Performance...");
-        
+
         long totalTime = 0;
-        
+
         for (int i = 0; i < TEST_ITERATIONS; i++) {
             LibraryManager manager = new LibraryManager();
-            
-            // Setup data
+
+            // Setup data (suppress output for cleaner timing)
             for (int j = 0; j < 20; j++) {
                 manager.addBook("Book " + j, "Author " + j, "ISBN" + j, 2020);
                 if (j < 10) {
                     manager.addMember("Member " + j, "member" + j + "@email.com", "123-456-" + String.format("%04d", j));
                 }
             }
-            
+
             long startTime = System.nanoTime();
             manager.performanceTest();
             long endTime = System.nanoTime();
-            
-            totalTime += (endTime - startTime);
+
+            long iterationTime = endTime - startTime;
+            totalTime += iterationTime;
+
+            System.out.printf("  Iteration %d: %.2f ms%n", i + 1, iterationTime / 1_000_000.0);
         }
-        
+
         long averageTime = totalTime / TEST_ITERATIONS;
-        System.out.printf("Original code average time: %.2f ms%n", averageTime / 1_000_000.0);
-        
+        System.out.println("=== ORIGINAL CODE TIMING RESULTS ===");
+        System.out.printf("Average execution time: %.2f ms%n", averageTime / 1_000_000.0);
+        System.out.println("=====================================");
+
         return averageTime;
     }
     
     private static long measureRefactoredPerformance() {
-        System.out.println("Testing Refactored Code Performance...");
-        
+        System.out.println("\nTesting Refactored Code Performance...");
+
         long totalTime = 0;
-        
+
         for (int i = 0; i < TEST_ITERATIONS; i++) {
             RefactoredLibraryManager manager = new RefactoredLibraryManager();
-            
-            // Setup data
+
+            // Setup data (suppress output for cleaner timing)
             for (int j = 0; j < 20; j++) {
                 manager.addBook("Book " + j, "Author " + j, "ISBN" + j, 2020);
                 if (j < 10) {
                     manager.addMember("Member " + j, "member" + j + "@email.com", "123-456-" + String.format("%04d", j));
                 }
             }
-            
+
             long startTime = System.nanoTime();
             manager.performOptimizedOperations();
             long endTime = System.nanoTime();
-            
-            totalTime += (endTime - startTime);
+
+            long iterationTime = endTime - startTime;
+            totalTime += iterationTime;
+
+            System.out.printf("  Iteration %d: %.2f ms%n", i + 1, iterationTime / 1_000_000.0);
         }
-        
+
         long averageTime = totalTime / TEST_ITERATIONS;
-        System.out.printf("Refactored code average time: %.2f ms%n", averageTime / 1_000_000.0);
-        
+        System.out.println("=== REFACTORED CODE TIMING RESULTS ===");
+        System.out.printf("Average execution time: %.2f ms%n", averageTime / 1_000_000.0);
+        System.out.println("=======================================");
+
         return averageTime;
     }
     
@@ -215,5 +233,80 @@ public class PerformanceComparison {
         System.out.println("- Easier to extend functionality");
         System.out.println("- Better separation of concerns");
         System.out.println("- More readable and understandable code");
+    }
+
+    private static void createPerformanceSummaryFile(long originalTime, long refactoredTime) {
+        try {
+            String fileName = "performance_analysis_summary.txt";
+            FileWriter writer = new FileWriter(fileName);
+
+            // Get current timestamp
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            writer.write("=".repeat(60) + "\n");
+            writer.write("PERFORMANCE ANALYSIS SUMMARY REPORT\n");
+            writer.write("=".repeat(60) + "\n");
+            writer.write("Generated: " + now.format(formatter) + "\n");
+            writer.write("Test Iterations: " + TEST_ITERATIONS + "\n\n");
+
+            // Execution Time Results
+            double originalMs = originalTime / 1_000_000.0;
+            double refactoredMs = refactoredTime / 1_000_000.0;
+
+            writer.write("EXECUTION TIME COMPARISON:\n");
+            writer.write("-".repeat(30) + "\n");
+            writer.write(String.format("Original Code Average Time:    %.2f ms\n", originalMs));
+            writer.write(String.format("Refactored Code Average Time:  %.2f ms\n", refactoredMs));
+
+            if (originalTime > refactoredTime) {
+                double improvement = ((double)(originalTime - refactoredTime) / originalTime) * 100;
+                writer.write(String.format("Performance Improvement:       %.2f%% faster\n", improvement));
+            } else {
+                double degradation = ((double)(refactoredTime - originalTime) / originalTime) * 100;
+                writer.write(String.format("Performance Change:            %.2f%% slower\n", degradation));
+            }
+
+            double speedupFactor = (double)originalTime / refactoredTime;
+            writer.write(String.format("Speedup Factor:                %.2fx\n\n", speedupFactor));
+
+            // Code Quality Metrics
+            writer.write("CODE QUALITY IMPROVEMENTS:\n");
+            writer.write("-".repeat(30) + "\n");
+            writer.write("• God Class eliminated - Split into 7 focused classes\n");
+            writer.write("• Long Methods refactored - Average method size reduced\n");
+            writer.write("• Duplicate Code removed - Centralized validation\n");
+            writer.write("• Magic Numbers replaced - All constants named\n");
+            writer.write("• Poor Naming fixed - Descriptive variable names\n\n");
+
+            writer.write("ARCHITECTURAL IMPROVEMENTS:\n");
+            writer.write("-".repeat(30) + "\n");
+            writer.write("• Single Responsibility Principle applied\n");
+            writer.write("• Dependency Injection implemented\n");
+            writer.write("• Service Layer pattern introduced\n");
+            writer.write("• Efficient data structures (HashMap vs ArrayList)\n");
+            writer.write("• Better error handling and validation\n\n");
+
+            writer.write("MAINTAINABILITY BENEFITS:\n");
+            writer.write("-".repeat(30) + "\n");
+            writer.write("• Easier to test individual components\n");
+            writer.write("• Easier to extend functionality\n");
+            writer.write("• Better separation of concerns\n");
+            writer.write("• More readable and understandable code\n");
+            writer.write("• Reduced coupling between components\n\n");
+
+            writer.write("=".repeat(60) + "\n");
+            writer.write("END OF REPORT\n");
+            writer.write("=".repeat(60) + "\n");
+
+            writer.close();
+
+            System.out.println("\n=== SUMMARY FILE CREATED ===");
+            System.out.println("Performance analysis summary saved to: " + fileName);
+            System.out.println("============================");
+
+        } catch (IOException e) {
+            System.err.println("Error creating summary file: " + e.getMessage());
+        }
     }
 }

@@ -5,8 +5,8 @@
 
 package org.qiu.refactoring;
 
-import java.util.*;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Library Management System - Original Version (WITH CODE SMELLS)
@@ -38,10 +38,13 @@ public class Software_construction {
         manager.displayAllMembers();
 
         // Performance test
+        System.out.println("\n=== PERFORMANCE TEST ===");
         long startTime = System.currentTimeMillis();
         manager.performanceTest();
         long endTime = System.currentTimeMillis();
+        System.out.println("=== EXECUTION TIME RESULT ===");
         System.out.println("Original code execution time: " + (endTime - startTime) + " ms");
+        System.out.println("==============================");
     }
 }
 
