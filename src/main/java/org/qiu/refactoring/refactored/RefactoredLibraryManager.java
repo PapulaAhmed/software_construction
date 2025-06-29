@@ -12,7 +12,6 @@ public class RefactoredLibraryManager {
     private final BookService bookService;
     private final MemberService memberService;
     private final BorrowingService borrowingService;
-    private final DisplayService displayService;
     
     /**
      * Constructor with dependency injection
@@ -21,7 +20,6 @@ public class RefactoredLibraryManager {
         this.bookService = new BookService();
         this.memberService = new MemberService();
         this.borrowingService = new BorrowingService(bookService, memberService);
-        this.displayService = new DisplayService(bookService, memberService);
     }
     
     /**
@@ -56,21 +54,29 @@ public class RefactoredLibraryManager {
      * Display all books
      */
     public void displayAllBooks() {
-        displayService.displayAllBooks();
+        System.out.println("\n=== All Books ===");
+        bookService.getAllBooks().forEach(book ->
+            System.out.println(book.getTitle() + " by " + book.getAuthor() +
+                             " (ISBN: " + book.getIsbn() + ", Year: " + book.getYear() + ")"));
     }
-    
+
     /**
      * Display all members
      */
     public void displayAllMembers() {
-        displayService.displayAllMembers();
+        System.out.println("\n=== All Members ===");
+        memberService.getAllMembers().forEach(member ->
+            System.out.println(member.getName() + " (" + member.getEmail() +
+                             ", Phone: " + member.getPhone() + ", Borrowed: " + member.getBorrowedBooksCount() + ")"));
     }
-    
+
     /**
      * Display library statistics
      */
     public void displayStatistics() {
-        displayService.displayLibraryStatistics();
+        System.out.println("\n=== Library Statistics ===");
+        System.out.println("Total Books: " + bookService.getTotalBooks());
+        System.out.println("Total Members: " + memberService.getTotalMembers());
     }
     
     /**
@@ -105,9 +111,5 @@ public class RefactoredLibraryManager {
     
     public BorrowingService getBorrowingService() {
         return borrowingService;
-    }
-    
-    public DisplayService getDisplayService() {
-        return displayService;
     }
 }

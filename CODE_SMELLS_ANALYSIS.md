@@ -72,16 +72,6 @@ if (parameter == null || parameter.trim().isEmpty()) {
 - `5` for maximum borrowing limit
 - `1000` in performance test loop
 
-#### Code Smell #5: Poor Naming
-
-**Location:** Display methods and loops
-
-**Description:** Variables with non-descriptive names:
-
-- `x`, `y` for loop counters
-- `temp`, `temp2` for temporary objects
-- Method name `performanceTest()` doesn't describe what it tests
-
 ### 3. Methods of Detecting Code Smells
 
 #### 3.1 Static Code Analysis Tools
@@ -161,19 +151,13 @@ private static final int MAX_BORROWING_LIMIT = 5;
 private static final int MIN_PUBLICATION_YEAR = 1900;
 ```
 
-#### 4.4 Rename Variables and Methods
-
-**Purpose:** Improve code readability
-**When to Use:** Non-descriptive names like x, temp, data
-**Example:** `x` → `bookIndex`, `temp` → `currentBook`
-
-#### 4.5 Remove Duplicate Code
+#### 4.4 Remove Duplicate Code
 
 **Purpose:** Reduce maintenance burden and improve consistency
 **When to Use:** Similar code blocks in multiple places
 **Example:** Create common validation methods
 
-#### 4.6 Introduce Parameter Object
+#### 4.5 Introduce Parameter Object
 
 **Purpose:** Reduce parameter lists and group related data
 **When to Use:** Methods with many parameters
@@ -214,8 +198,7 @@ The refactoring process involved breaking down the monolithic `LibraryManager` c
 5. **BookService.java** - Handles book management operations
 6. **MemberService.java** - Handles member management operations
 7. **BorrowingService.java** - Handles borrowing/returning operations
-8. **DisplayService.java** - Handles all display and reporting operations
-9. **RefactoredLibraryManager.java** - Orchestrates services using dependency injection
+8. **RefactoredLibraryManager.java** - Orchestrates services using dependency injection
 
 ### 6.2 Key Improvements Applied
 
@@ -258,20 +241,6 @@ if (!ValidationUtils.isValidString(title, "Title")) {
 }
 ```
 
-#### Improve Naming
-
-```java
-// Before: Poor variable names
-for (int x = 0; x < books.size(); x++) {
-    Book temp = books.get(x);
-}
-
-// After: Descriptive names
-int bookIndex = 1;
-for (Book currentBook : books) {
-    displayBookInfo(bookIndex, currentBook);
-    bookIndex++;
-}
 ```
 
 ## 7. Performance Comparison Results (BONUS)
@@ -329,7 +298,6 @@ for (Book currentBook : books) {
 - Long Method
 - Duplicate Code
 - Magic Numbers
-- Poor Naming
 
 ✅ **3. Detection Methods Explained:**
 
@@ -389,3 +357,4 @@ for (Book currentBook : books) {
 - Better adherence to SOLID principles
 
 This assignment demonstrates the practical value of identifying and fixing code smells through systematic refactoring, resulting in cleaner, more maintainable, and better-performing code.
+```

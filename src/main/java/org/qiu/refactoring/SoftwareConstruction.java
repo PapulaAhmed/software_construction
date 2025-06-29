@@ -56,7 +56,7 @@ public class SoftwareConstruction {
 // CODE SMELL 2: Long Method - Methods are too long and complex
 // CODE SMELL 3: Duplicate Code - Repeated validation logic
 // CODE SMELL 4: Magic Numbers - Hard-coded values without explanation
-// CODE SMELL 5: Poor Naming - Variables like 'x', 'temp', etc.
+
 class LibraryManager {
     final List<Book> books;
     final List<Member> members;
@@ -181,24 +181,21 @@ class LibraryManager {
         System.out.println("Book borrowed successfully: " + bookToBorrow.getTitle() + " by " + memberName);
     }
 
-    // CODE SMELL: Poor method naming and inefficient implementation
     public void displayAllBooks() {
         System.out.println("\n=== All Books ===");
-        // CODE SMELL: Poor variable naming
-        for (int x = 0; x < books.size(); x++) {
-            Book temp = books.get(x);
-            System.out.println((x + 1) + ". " + temp.getTitle() + " by " + temp.getAuthor() +
-                             " (ISBN: " + temp.getIsbn() + ", Year: " + temp.getYear() + ")");
+        for (int i = 0; i < books.size(); i++) {
+            Book book = books.get(i);
+            System.out.println((i + 1) + ". " + book.getTitle() + " by " + book.getAuthor() +
+                             " (ISBN: " + book.getIsbn() + ", Year: " + book.getYear() + ")");
         }
     }
 
     public void displayAllMembers() {
         System.out.println("\n=== All Members ===");
-        // CODE SMELL: Poor variable naming
-        for (int y = 0; y < members.size(); y++) {
-            Member temp2 = members.get(y);
-            System.out.println((y + 1) + ". " + temp2.getName() + " (" + temp2.getEmail() +
-                             ", Phone: " + temp2.getPhone() + ", Borrowed: " + temp2.getBorrowedBooksCount() + ")");
+        for (int i = 0; i < members.size(); i++) {
+            Member member = members.get(i);
+            System.out.println((i + 1) + ". " + member.getName() + " (" + member.getEmail() +
+                             ", Phone: " + member.getPhone() + ", Borrowed: " + member.getBorrowedBooksCount() + ")");
         }
     }
 
@@ -210,6 +207,7 @@ class LibraryManager {
             for (Book book : books) {
                 for (Member member : members) {
                     // Simulate some work
+                    @SuppressWarnings("unused")
                     String result = book.getTitle() + member.getName();
                 }
             }

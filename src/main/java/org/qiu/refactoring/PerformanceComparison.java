@@ -277,7 +277,6 @@ public class PerformanceComparison {
             writer.write("• Long Methods refactored - Average method size reduced\n");
             writer.write("• Duplicate Code removed - Centralized validation\n");
             writer.write("• Magic Numbers replaced - All constants named\n");
-            writer.write("• Poor Naming fixed - Descriptive variable names\n\n");
 
             writer.write("ARCHITECTURAL IMPROVEMENTS:\n");
             writer.write("-".repeat(30) + "\n");
