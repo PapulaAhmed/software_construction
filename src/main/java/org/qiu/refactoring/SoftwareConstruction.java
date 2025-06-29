@@ -10,17 +10,18 @@ import java.util.List;
 
 /**
  * Library Management System - Original Version (WITH CODE SMELLS)
- * @author Sahand Mohammed
- * @author Papula Ahmed
+ * @author Sahand Nasr Mohammed
+ * @author Papula Fouad Ahmed
  * @author Elaf Chatin Khalid
  * @author Meer Hoshyar Ahmed
  */
+
 public class SoftwareConstruction {
 
     public static void main(String[] args) {
         System.out.println("=== Library Management System - Original Version ===");
 
-        // Create library manager
+        // Create library managerJira Auto-Update.
         LibraryManager manager = new LibraryManager();
 
         // Add some books
